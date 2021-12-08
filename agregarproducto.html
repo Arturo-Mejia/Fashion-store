@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Agregar producto</title>
+    <style>
+    form
+    {
+        margin: 5%;
+    }
+    a
+    {
+        background-color: rgb(201, 201, 201);
+        color: white;
+        padding: 10px;
+        margin-top: 5px;
+    }
+    a:hover
+    {
+        color: white;
+        background-color: rgb(139, 139, 139);
+    } 
+
+    </style>
+</head>
+<body>
+<form id="formadd" action="agregarpro.php" method="POST">
+<h1>Agregar producto</h1>  
+ 
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Id categoria</label>
+    <input type="text" class="form-control" name="categoriaid" id="categoriaid" >
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Nombre</label>
+    <input type="text" class="form-control" name="nombre" id="nombre" >
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Descripcion</label>
+    <input type="text" class="form-control" name="descripcion" id="descripcion">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Precio</label>
+    <input type="text" class="form-control" name="precio" id="precio">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Url imagen</label>
+    <input type="text" class="form-control" name="imagen" id="imagen">
+  </div> 
+
+  <div class="form-group">
+    <a onclick="registrarp()">Agregar producto</a>
+  </div>
+  <h5 id="res"></h5>
+</form>
+
+<script>
+function registrarp()
+{   
+   
+   if(document.getElementById("categoriaid").value=="" || document.getElementById("nombre").value=="" || document.getElementById("descripcion").value=="" || document.getElementById("precio").value=="" || document.getElementById("imagen").value=="")
+   {
+     alert("Ingrese todos los datos para realizar el registro");
+   } else
+   {
+    let idcat=document.getElementById("categoriaid").value;
+    let nom=document.getElementById("nombre").value;
+    let desc=document.getElementById("descripcion").value;
+    let precio=document.getElementById("precio").value;
+    let img=document.getElementById("imagen").value;
+    
+    const http=new XMLHttpRequest();
+        const url="agregarpro.php?categoriaid="+idcat+"&nombre="+nom+"&descripcion="+desc+"&precio="+precio+"&imagen="+img;
+        http.onreadystatechange= function()
+        {
+            if(this.readyState == 4 && this.status==200)
+            {  
+              if(this.responseText=="correcto")
+              { 
+                document.getElementById("formadd").reset();
+                Swal.fire({
+                icon: 'success',
+                title: 'Realizado',
+                text: 'Producto agregado correctamente'
+                  })
+
+              }  else{ document.getElementById("res").innerHTML=this.responseText;}
+                
+            }
+        }  
+    
+        http.open("GET",url);
+        http.send();
+   }
+   
+}
+</script>
+</body>
+</html>
